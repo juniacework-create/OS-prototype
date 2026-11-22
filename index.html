@@ -363,7 +363,23 @@
     }
 
   .notes-input::placeholder {
-  color: #a89f94;
+   color: #a89f94;
+  }
+  .power{
+    cursor: pointer;
+  }
+
+  .power::before{
+    content: "";
+    position: absolute;
+    top: -10px;
+    bottom: -10px;
+    left: -12px;
+    right: 0;
+  }
+
+  .power:hover{
+    background: #4a423c;
   }
   </style>
 </head>
@@ -512,6 +528,11 @@
             notesInput.style.display = isNotes ? 'block' : 'none';
             appBody.style.display = isNotes ? 'none' : 'block';
         });
+    });
+
+    document.querySelector('.power').addEventListener('click', function(){
+      front.classList.remove('app-open');
+      front.classList.toggle('locked');
     });
   </script>
 </body>
