@@ -381,6 +381,55 @@
   .power:hover{
     background: #4a423c;
   }
+
+  .volume{
+    cursor: pointer;
+  }
+  .voulume::before{
+    content:  "";
+    position: absolute;
+    top: -10px;
+    bottom: -10px;
+    left: 0;
+    right: -12px;
+  }
+
+  .volume-hud{
+    position: absolute;
+    top: 44px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200px;
+    box-sizing: border-box;
+    background: #2b2724;
+    border-radius: 20px;
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s;
+    z-index: 10;
+  }
+
+  .volume-hud.show{
+    opacity: 1;
+  }
+
+  .vol-label{
+    font-size: 13px;
+    color: #a89f94;
+    min-width: 44px;
+  }
+
+  .vol-fill{
+    width: 50%;
+    height: 100%;
+    background: #84d98c;
+    border-radius: 3px;
+    transition: width 0.15s;
+  }
   </style>
 </head>
 <body>
@@ -435,14 +484,19 @@
           <div class="app"></div>
           <div class="app"></div>
         </div>
-      </div>
+       </div>
 
-    <div class="app-screen">
-      <div class="app-title"></div>
-      <div class="app-body">Coming soon</div>
-      <textarea class="notes-input" placeholder="Write a note..."></textarea>
-      <div class="home-bar"></div>
-    </div>
+     <div class="app-screen">
+       <div class="app-title"></div>
+       <div class="app-body">Coming soon</div>
+       <textarea class="notes-input" placeholder="Write a note..."></textarea>
+       <div class="home-bar"></div>
+     </div>
+
+     <div class="volume-hud">
+       <span class="vol-label">Volume</span>
+       <div class="vol-bar"><div class="vol-fill"></div></div>
+      </div>
     </div>
 
     <!-- BACK -->
@@ -533,6 +587,37 @@
     document.querySelector('.power').addEventListener('click', function(){
       front.classList.remove('app-open');
       front.classList.toggle('locked');
+    });
+
+    document.querySelectorAll('.app').forEach(function(app){
+      app.addEventListener('click', function(){
+        appTitle.textContent = app.dataset.name;
+        notesInput.style.display = 'none';
+        appBody.style.display = 'block';
+        front.classList.add('app-open');
+      });
+    });
+
+    let volume = 5;
+    let hudTimer;
+    const hud = document.querySelector('.volume-hud');
+    const volFill = document.querySelector('.vol-fill');
+    const volLabel = document.querySelector('.vol-label');
+
+    document.querySelector('.volume').addEventListener('click', function(e){
+      const rect = this.getBoundingClientRect();
+      if (e.clientY< rect.top + rect.height / 2){
+        volume = Math.min(10, volume + 1);
+      } else {
+        volume = Math.max(0, volume - 1);
+      }
+      volFill.style.width = volume * 10 + '%';
+      volLabel.textContent = volume === 0 ? 'Muted' : 'Volume';
+      hud.classList.add('show');
+      clearTimeout(hudTimer);
+      hudTimer = setTimeout(function (){
+        hud.classList.remove('show');
+      }, 1500);
     });
   </script>
 </body>
