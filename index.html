@@ -498,6 +498,23 @@
 
     updateClock();
     setInterval(updateClock, 1000);
+
+    const notesInput =  document.querySelector('.notes-input');
+    const appBody = document.querySelector('.app-body');
+
+    notesInput.value = localStorage.getItem('marsians-note') || '';
+
+    notesInput.addEventListener('input', function(){
+        localStorage.setItem('marsians-note', notesInput.value);
+    });
+
+    document.querySelectorAll('.icon').forEach(function(icon){
+        icon.addEventListener('click', function(){
+            const isNotes = icon.querySelector('span').textContent === 'Notes';
+            notesInput.style.display = isNotes ? 'block' : 'none';
+            appBody.style.display = isNotes ? 'none' : 'block';
+        });
+    });
   </script>
 </body>
 </html>
