@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <title>My OS_PROTOTYPE</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@600;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    /* ---------- PAGE ---------- */
+
     body {
       margin: 0;
       height: 100vh;
@@ -14,9 +15,9 @@
       align-items: center;
       justify-content: center;
       perspective: 1200px;
+      touch-action: manipulation;
     }
 
-    /* ---------- PHONE (the 3D container) ---------- */
     .phone {
       width: 360px;
       height: 780px;
@@ -33,7 +34,6 @@
       transform: rotateY(180deg);
     }
 
-    /* front and back sit on top of each other */
     .front, .back {
       position: absolute;
       inset: 0;
@@ -52,7 +52,6 @@
       transform: rotateY(180deg);
     }
 
-    /* ---------- FRONT: LOCK SCREEN ---------- */
     .status-bar {
       display: flex;
       justify-content: space-between;
@@ -86,7 +85,6 @@
       font-size: 13px;
     }
 
-    /* ---------- FRONT: HOME SCREEN ---------- */
     .home {
       position: absolute;
       top: 56px;
@@ -99,7 +97,6 @@
       transition: opacity 0.4s;
     }
 
-    /* when the phone is locked, hide the home screen */
     .front.locked .home {
       opacity: 0;
       pointer-events: none;
@@ -169,7 +166,6 @@
     .icon-box.teal     { background: #5fa8a3; }
     .icon-box.gear     { background: #8c867f; }
 
-    /* dock */
     .dock {
       position: absolute;
       bottom: 24px;
@@ -195,7 +191,6 @@
       background: #d9a384;
     }
 
-    /* ---------- BACK ---------- */
     .camera {
       position: relative;
       width: 96px;
@@ -250,7 +245,6 @@
       color: #a89f94;
     }
 
-    /* ---------- SIDE BUTTONS ---------- */
     .btn {
       position: absolute;
       width: 4px;
@@ -271,7 +265,6 @@
       border-radius: 4px 0 0 4px;
     }
 
-    /* ---------- FLIP BUTTON (outside the phone) ---------- */
     .flip-btn {
       position: fixed;
       bottom: 24px;
@@ -352,22 +345,22 @@
     }
 
     .notes-input {
-   display: none;
-   width: 100%;
-   box-sizing: border-box;
-   height: 540px;
-   margin-top: 16px;
-   background: #2b2724;
-   color: #ece4da;
-   border: none;
-   border-radius: 20px;
-   padding: 16px;
-   font-family: sans-serif;
-   font-size: 16px;
-   resize: none;
-   outline: none;
-   caret-color: #d9a384;
-  }
+     display: none;
+     width: 100%;
+     box-sizing: border-box;
+     height: 540px;
+     margin-top: 16px;
+     background: #2b2724;
+     color: #ece4da;
+     border: none;
+     border-radius: 20px;
+     padding: 16px;
+     font-family: sans-serif;
+     font-size: 16px;
+     resize: none;
+     outline: none;
+     caret-color: #d9a384;
+    }
 
   .notes-input::placeholder {
   color: #a89f94;
@@ -462,9 +455,14 @@
     document.querySelector('.flip-btn').addEventListener('click', function () {
       phone.classList.toggle('flipped');
     });
-
-    front.addEventListener('dblclick', function () {
-      front.classList.remove('locked');
+    
+    let lastTap = 0;
+    front.addEventListener('pointerup', function (){
+        const now = Date.now();
+        if (now - lastTap < 350){
+            front.classList.remove('locked');
+        }
+        lastTap = now;
     });
 
     const appTitle = document.querySelector('.app-title');
