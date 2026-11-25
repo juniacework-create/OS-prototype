@@ -393,15 +393,15 @@
     left: 0;
     right: -12px;
   }
-
   .volume-hud{
     position: absolute;
     top: 44px;
     left: 50%;
     transform: translateX(-50%);
-    width: 200px;
+    width: 220px;
     box-sizing: border-box;
-    background: #2b2724;
+    background: #38322e;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
     border-radius: 20px;
     padding: 10px 16px;
     display: flex;
@@ -419,17 +419,25 @@
 
   .vol-label{
     font-size: 13px;
-    color: #a89f94;
-    min-width: 44px;
+    color: #ece4da;
+    min-width: 64px;
+  }
+
+  .vol-bar{
+    flex: 1;
+    height: 100%;
+    background: #5a5047;
+    border-radius: 5px;
   }
 
   .vol-fill{
     width: 50%;
     height: 100%;
-    background: #84d98c;
-    border-radius: 3px;
+    background: #d9a384;
     transition: width 0.15s;
   }
+
+
   </style>
 </head>
 <body>
@@ -612,7 +620,7 @@
         volume = Math.max(0, volume - 1);
       }
       volFill.style.width = volume * 10 + '%';
-      volLabel.textContent = volume === 0 ? 'Muted' : 'Volume';
+      volLabel.textContent = volume === 0 ? 'Muted' : 'Volume' +volume;
       hud.classList.add('show');
       clearTimeout(hudTimer);
       hudTimer = setTimeout(function (){
